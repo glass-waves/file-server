@@ -18,4 +18,16 @@ describe('endpoint test', () => {
 </html>`;
 expect(result.text).toEqual(expect.stringContaining(expectation));
   });
+
+  
+  it('should serve an error when file is not found', async () => {
+    const result = await request(app).get('/file/tex');
+    const expectation = `Error: ENOENT: no such file or directory, open 'public/tex'`;
+expect(result.text).toEqual(expectation);
+  });
+
+
+
+
+
 });

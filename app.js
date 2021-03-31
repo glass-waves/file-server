@@ -8,14 +8,13 @@ const app = net.createServer((socket) => {
         const request = parseRequest(data);
         const path = request.path;
         const cleanPath = path.replace('/file', '');
-        if(request.method === 'GET' && request.path === `/file${cleanPath}`);
+        if(request.method === 'GET' && request.path === `/file${cleanPath}`){
             fs.readFile(`public${cleanPath}`)
                 .then(data => {
-                    socket.end(createResponse({body : data, contentType : 'text/html', status : '200 OK' }));              
+                    socket.end(createResponse({body : data, contentType : 'text/html', status : '200 OK' }));             
                 })
-                .catch(error => console.error(error))
-    })
+                .catch(error => socket.end(createResponse({body: `${error}`, contentType : 'text/html', status : '404' })))
+        }
+    });
 });
-
-
 module.exports = app;
